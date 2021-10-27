@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 def create_chipotle_table():
     # Create table from csv
-    engine = create_engine("postgresql://postgres@localhost:5433/pbd", echo=False)
+    engine = create_engine("postgresql://postgres@localhost:5432/pbd", echo=False)
     df = pd.read_csv("chipotle/chipotle_stores.csv")
     df.to_sql("chipotle", con=engine, if_exists='replace')
     engine.dispose()
