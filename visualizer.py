@@ -10,13 +10,30 @@ from folium.plugins import MarkerCluster
 
 def plot_state_distribution(state_count: List):
     df_state_count = pd.DataFrame(
-        state_count, columns=['Name', 'Restaurants']).sort_values(by=['Restaurants'])
+        state_count, columns=['Name', 'Restaurants', 'GDP', 'Population']).sort_values(by=['Restaurants'])
     plt.figure(figsize=(10, 6))
     plt.title("Number of Chipotle Stores by State")
     sns.barplot(x='Name', y='Restaurants', data=df_state_count)
     plt.xticks(rotation=90)
     plt.show()
 
+def plot_pop_rest_relation(state_table: List):
+    df = pd.DataFrame(
+        state_table, columns=['Name', 'Restaurants', 'GDP', 'Population'])
+    plt.figure(figsize=(10, 6))
+    plt.title("Population vs Restaurants")
+    sns.regplot(x='Restaurants', y='Population', data=df)
+    plt.xticks(rotation=90)
+    plt.show()
+
+def plot_pop_rest_gdp(state_table: List):
+    df = pd.DataFrame(
+        state_table, columns=['Name', 'Restaurants', 'GDP', 'Population'])
+    plt.figure(figsize=(10, 6))
+    plt.title("Population vs GDP")
+    sns.regplot(x='Restaurants', y='GDP', data=df)
+    plt.xticks(rotation=90)
+    plt.show()
 
 class Map:
     def __init__(self, geoJSON):

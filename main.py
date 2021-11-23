@@ -7,6 +7,7 @@ from visualizer import *
 
 def reset(cursor):
     cursor.execute("DROP TABLE IF EXISTS public.chipotle")
+    cursor.execute("DROP TABLE IF EXISTS public.us_census")
 
 
 def main():
@@ -24,10 +25,19 @@ def main():
 
     create_chipotle_table()
     prepare_chipotle_table(cursor)
+
+    # https://www.kaggle.com/lislejoem/us_energy_census_gdp_10-14
+    create_us_census_table()
+    prepare_us_census_table(cursor)
+
     result = count_restaurants_per_state(cursor)
 
     # here we are just using plot, in the future we want to use a GUI library
     plot_state_distribution(result)
+    plot_pop_rest_relation(result)
+    plot_pop_rest_gdp(result)
+
+    plot_pop_rest_relation
 
     # Show all locations on map in the browser
     result = get_all_locations_as_multipoint(cursor)
