@@ -16,6 +16,7 @@ def plot_state_distribution(df):
     plt.title("Numero de Restaurantes por Estado")
     sns.barplot(x='Estado', y='Restaurantes', data=df)
     plt.xticks(rotation=90)
+    plt.tight_layout()
     plt.show()
 
 def plot_pop_rest_relation(df):
@@ -23,6 +24,7 @@ def plot_pop_rest_relation(df):
     plt.title("Populacao vs Restaurantes")
     sns.regplot(x='Restaurantes', y='Populacao', data=df)
     plt.xticks(rotation=90)
+    plt.tight_layout()
     plt.show()
 
 def plot_pop_rest_gdp(df):
@@ -30,6 +32,7 @@ def plot_pop_rest_gdp(df):
     plt.title("Populacao vs PIB")
     sns.regplot(x='Restaurantes', y='PIB', data=df)
     plt.xticks(rotation=90)
+    plt.tight_layout()
     plt.show()
 
 def linear_regression(df):
@@ -53,6 +56,7 @@ def plot_predictions(df: DataFrame):
     plt.plot([-50,500],[-50,500],'r--')
     plt.xlim(-10,max(df["Restaurantes Esperados"])+20)
     plt.ylim(-10,max(df.Restaurantes)+20)
+    plt.tight_layout()
     plt.show()
 
     df['Diferenca']=df["Restaurantes Esperados"]-df.Restaurantes
@@ -60,6 +64,7 @@ def plot_predictions(df: DataFrame):
     plt.title("Numero de restaurantes em excesso/escasez por Estado")
     sns.barplot(data=df.sort_values(by='Diferenca', ascending=False),
             x='Diferenca',y='Estado', orient='h')
+    plt.tight_layout()
     plt.show()
 
 class Map:
