@@ -3,6 +3,7 @@ from load import *
 from queries import *
 from visualizer import *
 import pandas as pd
+import PySimpleGUI as sg
 
 
 
@@ -35,20 +36,44 @@ def main():
 
     df = pd.DataFrame(
         result, columns=['Estado', 'Restaurantes', 'PIB', 'Populacao'])
-    plot_state_distribution(df)
-    plot_pop_rest_relation(df)
-    plot_pop_rest_gdp(df)
 
-    # using linear regression to calculate where there is missing restaurants
-    linear_regression(df)
-
-    # Show all locations on map in the browser
     result = get_all_locations_as_multipoint(cursor)
     map = Map(result)
-    map.showMap()
+    # map.showMap()
+
+    mainloop_ui(df, map)
 
     conn.close()
 
+def mainloop_ui(df, map):
+    layout = [[sg.Text("Dados sobre as localizações do restaurante Chipotle", font=("Helvetica", 18))], 
+        [sg.Button("Distribuicao por Estado", font=("Helvetica", 15))],
+        [sg.Button("Relação entre populaçao e numero de restaurantes", font=("Helvetica", 15))],
+        [sg.Button("Relação entre PIB e numero de restaurantes", font=("Helvetica", 15))],
+        [sg.Button("Estados com excesso ou escassez de restaurantes", font=("Helvetica", 15))],
+        [sg.Button("Mapa", font=("Helvetica", 15))],
+        ]
+
+    # Create the window
+    window = sg.Window("Chipotle", layout)
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+        if event == "Distribuicao por Estado":
+            plot_state_distribution(df)
+        elif event == "Relação entre populaçao e numero de restaurantes":
+            plot_pop_rest_relation(df)
+        elif event == "Relação entre PIB e numero de restaurantes":
+            plot_pop_rest_gdp(df)
+        elif event == "Estados com excesso ou escassez de restaurantes":
+            linear_regression(df)
+        elif event == "Mapa":
+            map.showMap()
+        elif event == sg.WIN_CLOSED:
+            break
+
+    window.close()
 
 if __name__ == "__main__":
     main()

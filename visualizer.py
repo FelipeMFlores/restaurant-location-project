@@ -55,11 +55,11 @@ def plot_predictions(df: DataFrame):
     plt.ylim(-10,max(df.Restaurantes)+20)
     plt.show()
 
-    df['scope']=df["Restaurantes Esperados"]-df.Restaurantes
+    df['Diferenca']=df["Restaurantes Esperados"]-df.Restaurantes
     plt.figure(figsize=(4,8))
     plt.title("Numero de restaurantes em excesso/escasez por Estado")
-    sns.barplot(data=df.sort_values(by='scope', ascending=False),
-            x='scope',y='Estado', orient='h')
+    sns.barplot(data=df.sort_values(by='Diferenca', ascending=False),
+            x='Diferenca',y='Estado', orient='h')
     plt.show()
 
 class Map:
