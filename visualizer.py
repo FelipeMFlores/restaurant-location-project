@@ -35,7 +35,7 @@ def plot_pop_rest_gdp(df):
     plt.tight_layout()
     plt.show()
 
-def linear_regression(df):
+def linear_regression(df, suggestion):
     X=df[['PIB','Populacao']]
     y=df['Restaurantes']
     model=LinearRegression()
@@ -45,27 +45,28 @@ def linear_regression(df):
     df['Restaurantes Esperados']=y_pred
     df["Restaurantes Esperados"]=df["Restaurantes Esperados"].astype('int')
 
-    plot_predictions(df)
+    plot_predictions(df, suggestion)
 
-def plot_predictions(df: DataFrame):
-    plt.figure(figsize=(10,8))
-    plt.title("Estados com excesso ou escasez (Regressao Linear com PIB e Populacao)")
-    plot=sns.scatterplot(x='Restaurantes Esperados',y='Restaurantes',data=df)
-    for i in range(0, df.shape[0]):
-        plot.text(df["Restaurantes Esperados"][i], df.Restaurantes[i], df.Estado[i], alpha=0.8, fontsize=8 )
-    plt.plot([-50,500],[-50,500],'r--')
-    plt.xlim(-10,max(df["Restaurantes Esperados"])+20)
-    plt.ylim(-10,max(df.Restaurantes)+20)
-    plt.tight_layout()
-    plt.show()
-
-    df['Diferenca']=df["Restaurantes Esperados"]-df.Restaurantes
-    plt.figure(figsize=(4,8))
-    plt.title("Numero de restaurantes em excesso/escasez por Estado")
-    sns.barplot(data=df.sort_values(by='Diferenca', ascending=False),
-            x='Diferenca',y='Estado', orient='h')
-    plt.tight_layout()
-    plt.show()
+def plot_predictions(df: DataFrame, suggestion):
+    if not suggestion:
+        plt.figure(figsize=(10,8))
+        plt.title("Estados com excesso ou escassez (Regressao Linear com PIB e Populacao)")
+        plot=sns.scatterplot(x='Restaurantes Esperados',y='Restaurantes',data=df)
+        for i in range(0, df.shape[0]):
+            plot.text(df["Restaurantes Esperados"][i], df.Restaurantes[i], df.Estado[i], alpha=0.8, fontsize=8 )
+        plt.plot([-50,500],[-50,500],'r--')
+        plt.xlim(-10,max(df["Restaurantes Esperados"])+20)
+        plt.ylim(-10,max(df.Restaurantes)+20)
+        plt.tight_layout()
+        plt.show()
+    else:
+        df['Diferenca']=df["Restaurantes Esperados"]-df.Restaurantes
+        plt.figure(figsize=(10,8))
+        plt.title("Numero de restaurantes em excesso/escassez por Estado")
+        sns.barplot(data=df.sort_values(by='Diferenca', ascending=False),
+                x='Diferenca',y='Estado', orient='h')
+        plt.tight_layout()
+        plt.show()
 
 class Map:
     def __init__(self, geoJSON):
